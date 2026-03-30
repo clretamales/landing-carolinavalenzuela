@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carolina Valenzuela | Psicóloga Clínica en Chile</title>
-  <meta name="description" content="Carolina Valenzuela es psicóloga clínica en Chile que ofrece terapia online para ansiedad, estrés y dificultades emocionales con un enfoque cálido y profesional.">
+  <title>Psicóloga Clínica en Chile | Terapia Online Ansiedad y Estrés | Carolina Valenzuela</title>
+  <meta name="description" content="Psicóloga clínica en Chile especializada en ansiedad, estrés y apoyo emocional. Agenda tu sesión online por WhatsApp con atención cercana y profesional.">
   <meta name="keywords" content="psicóloga clínica, terapia online Chile, ansiedad, estrés, salud emocional, apoyo psicológico">
   <link rel="canonical" href="https://carolinavalenzuela.cl">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
           Acompaño procesos de ansiedad, estrés y dificultades emocionales desde un enfoque cercano, respetuoso y profesional.
         </p>
         <a class="btn primary" href="https://wa.me/56995371195?text=Hola%20Carolina,%20quiero%20agendar%20una%20sesión" target="_blank" rel="noopener">
-          Agendar sesión por WhatsApp
+          Quiero agendar mi sesión
         </a>
       </div>
     </header>
@@ -40,26 +40,44 @@
           </button>
           <div class="carousel-track" role="list">
             <article class="carousel-card" role="listitem">
+              <div class="card-icon" aria-hidden="true">
+                <i data-lucide="brain"></i>
+              </div>
               <h3>Ansiedad</h3>
               <p>Trabajo con inquietud constante, preocupación excesiva y dificultad para relajarte.</p>
             </article>
             <article class="carousel-card" role="listitem">
+              <div class="card-icon" aria-hidden="true">
+                <i data-lucide="zap"></i>
+              </div>
               <h3>Estrés</h3>
               <p>Encuentra respiraciones conscientes y límites claros para aliviar la carga diaria.</p>
             </article>
             <article class="carousel-card" role="listitem">
+              <div class="card-icon" aria-hidden="true">
+                <i data-lucide="heart"></i>
+              </div>
               <h3>Desborde emocional</h3>
               <p>Recupera calma cuando las emociones se sienten abrumadoras y difíciles de contener.</p>
             </article>
             <article class="carousel-card" role="listitem">
+              <div class="card-icon" aria-hidden="true">
+                <i data-lucide="sparkles"></i>
+              </div>
               <h3>Autoestima</h3>
               <p>Fomenta la autocompasión, reconoce tus logros y valida tu valor personal.</p>
             </article>
             <article class="carousel-card" role="listitem">
+              <div class="card-icon" aria-hidden="true">
+                <i data-lucide="messages-square"></i>
+              </div>
               <h3>Relaciones</h3>
               <p>Explora vínculos significativos para dialogar con claridad y empatía.</p>
             </article>
             <article class="carousel-card" role="listitem">
+              <div class="card-icon" aria-hidden="true">
+                <i data-lucide="compass"></i>
+              </div>
               <h3>Crisis personales</h3>
               <p>Acompañamiento profesional cuando necesitas orientarte en decisiones y cambios.</p>
             </article>
@@ -108,18 +126,30 @@
     </main>
   </div>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script>
-    const track = document.querySelector('.carousel-track');
-    document.querySelectorAll('.carousel-arrow').forEach((button) => {
-      button.addEventListener('click', () => {
-        const direction = button.getAttribute('data-dir');
-        const scrollAmount = track.clientWidth * 0.7;
-        track.scrollBy({
-          left: direction === 'next' ? scrollAmount : -scrollAmount,
-          behavior: 'smooth',
+      document.addEventListener('DOMContentLoaded', () => {
+      const track = document.querySelector('.carousel-track');
+
+      document.querySelectorAll('.carousel-arrow').forEach((button) => {
+        button.addEventListener('click', () => {
+          const direction = button.getAttribute('data-dir');
+          const scrollAmount = track.clientWidth * 0.7;
+          track.scrollBy({
+            left: direction === 'next' ? scrollAmount : -scrollAmount,
+            behavior: 'smooth',
+          });
         });
       });
+
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
     });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/lucide.min.js"></script>
+  <script>
+    lucide.createIcons();
   </script>
 </body>
 </html>

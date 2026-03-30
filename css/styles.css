@@ -165,6 +165,7 @@ main {
 .carousel-card h3 {
   font-size: 1.25rem;
   margin-bottom: 8px;
+  text-align: center;
 }
 
 .carousel-card p {
@@ -190,6 +191,32 @@ main {
 
 .carousel-card:hover::after {
   opacity: 1;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(141, 123, 138, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 16px auto; /* 👈 esto lo centra */
+  color: var(--accent);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.carousel-card:hover .card-icon {
+  transform: scale(1.1);
+  background: rgba(141, 123, 138, 0.2);
+}
+
+.card-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.8;
+  fill: none;
+  display: block;
 }
 
 .carousel-arrow {
