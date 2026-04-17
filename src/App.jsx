@@ -16,6 +16,8 @@ import {
   ChevronRight,
   Sun,
   Moon,
+  Instagram,
+  Linkedin,
 } from 'lucide-react'
 
 const WireframeSphere = ({ className = '' }) => (
@@ -105,6 +107,10 @@ const serviceCards = [
 
 const servicesLinkText = 'SABER MÁS' /* CAMBIAR TEXTO DEL LINK AQUÍ */
 
+const whatsappNumber = '+56912345678' /* EDITAR NÚMERO DE WHATSAPP AQUÍ */
+const whatsappMessage = 'Hola%20Carolina,%20quiero%20coordinar%20mi%20primera%20sesión.' /* EDITAR MENSAJE INICIAL DE WHATSAPP AQUÍ */
+const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${whatsappMessage}` /* CAMBIAR LINK DE CTA AQUÍ */
+
 const fadeIn = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
@@ -176,19 +182,17 @@ export default function App() {
         </div>
 
         {/* NAVBAR FIJO AQUÍ */}
-        {/* AJUSTAR BLUR AQUÍ */}
-        {/* AJUSTAR TRANSPARENCIA NAVBAR AQUÍ */}
-        {/* CAMBIAR COLOR BASE NAVBAR AQUÍ */}
+        {/* AJUSTAR BLUR DEL NAVBAR AQUÍ */}
+        {/* AJUSTAR COLOR DE FONDO AQUÍ */}
         <header className="fixed inset-x-0 top-0 z-50 px-4">
           <nav
-            className={`mx-auto flex w-full max-w-6xl items-center justify-between rounded-3xl border px-6 py-4 shadow-lg backdrop-blur-[30px] transition-all duration-500 ${
+            className={`mx-auto flex w-full max-w-6xl items-center justify-between rounded-3xl border px-6 py-4 shadow-md backdrop-blur-md transition-all duration-500 ${
               isDark
-                ? 'bg-slate-900/40 border-slate-800/40 text-teal-100'
-                : 'bg-teal-50/50 border-white/40 text-teal-900'
-            } ${isScrolled ? 'shadow-[0_30px_50px_rgba(4,78,67,0.45)] dark:shadow-[0_30px_50px_rgba(2,63,67,0.65)] bg-white/30 dark:bg-slate-900/60' : ''}`}
+                ? 'bg-slate-900/80 border-white/20 text-teal-100'
+                : 'bg-white/80 border-teal-100/60 text-teal-900'
+            } ${isScrolled ? 'shadow-lg bg-white/90 dark:bg-slate-900/90' : ''}`}
           >
-            {/* AJUSTAR ALTURA DEL NAVBAR AQUÍ */}
-            {/* AJUSTAR SOMBRA O FONDO DEL NAVBAR EN SCROLL AQUÍ */}
+            {/* AJUSTAR SOMBRA AQUÍ */}
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/90 border border-teal-200 flex items-center justify-center shadow">
                 <span className="font-serif text-xl tracking-tight text-teal-700">CV</span>
@@ -198,14 +202,16 @@ export default function App() {
                 Carolina Valenzuela
               </p>
             </div>
-            <div className="hidden items-center gap-6 text-sm uppercase tracking-[0.3em] md:flex">
+            <div className="hidden items-center gap-5 text-sm md:flex">
               {/* CAMBIAR LINKS DEL NAVBAR AQUÍ */}
+              {/* AJUSTAR TIPOGRAFÍA DEL NAVBAR AQUÍ */}
+              {/* CAMBIAR TRACKING AQUÍ */}
               {/* AJUSTAR CONTRASTE TEXTO AQUÍ */}
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="transition-colors text-teal-900 hover:text-teal-900 dark:text-teal-100 dark:hover:text-white"
+                  className="transition-colors text-teal-900 hover:text-teal-900 dark:text-teal-100 dark:hover:text-white font-medium tracking-normal"
                 >
                   {link.label}
                 </a>
@@ -221,9 +227,10 @@ export default function App() {
                 {/* TOGGLE DE MODO OSCURO AQUÍ */}
                 {isDark ? <Sun size={18} className="text-teal-500" /> : <Moon size={18} className="text-teal-500" />}
               </button>
+              {/* AJUSTAR TIPOGRAFÍA DE BOTONES AQUÍ */}
               <a
                 href="#contacto"
-                className="rounded-full bg-teal-600 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.4em] text-white shadow-lg shadow-teal-600/30 transition hover:-translate-y-0.5"
+                className="rounded-full bg-teal-600 px-5 py-2.5 text-xs font-bold tracking-normal text-white shadow-lg shadow-teal-600/30 transition hover:-translate-y-0.5"
               >
                 {/* CAMBIAR TEXTO DEL BOTÓN PRINCIPAL AQUÍ */}
                 Reservar Hora
@@ -248,7 +255,12 @@ export default function App() {
                 className="space-y-6"
               >
                 {/* DESACTIVAR ANIMACIONES AQUÍ */}
-                <span className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50/60 px-4 py-1 text-[11px] uppercase tracking-[0.5em] text-teal-700 shadow-sm dark:border-teal-500/40 dark:bg-teal-500/10 dark:text-teal-100">
+                {/* AJUSTAR TIPOGRAFÍA DEL BADGE AQUÍ */}
+                {/* CAMBIAR TRACKING DEL BADGE AQUÍ */}
+                {/* AJUSTAR MAYÚSCULAS / MINÚSCULAS AQUÍ */}
+                {/* AJUSTAR ALINEACIÓN ÍCONO / TEXTO AQUÍ */}
+                {/* AJUSTAR ESTILO VISUAL DEL BADGE AQUÍ */}
+                <span className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-teal-50/60 px-4 py-1 text-[11px] uppercase tracking-normal text-teal-700 shadow-sm dark:border-teal-500/40 dark:bg-teal-500/10 dark:text-teal-100">
                   {/* CAMBIAR ÍCONO DEL BADGE AQUÍ */}
                   <Sparkles size={14} />
                   {/* CAMBIAR TEXTO DEL BADGE AQUÍ */}
@@ -264,9 +276,10 @@ export default function App() {
                   acompañamiento con evidencia científica y énfasis en que cada sesión sea reparadora.
                 </p>
                 <div className="flex flex-wrap gap-4">
+                  {/* CONTROLAR MAYÚSCULAS / MINÚSCULAS AQUÍ */}
                   <motion.a
                     href="#contacto"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-700 text-white font-semibold shadow-lg shadow-teal-700/30 transition-transform hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-700 text-white font-semibold tracking-normal shadow-lg shadow-teal-700/30 transition-transform hover:-translate-y-0.5" /* CAMBIAR TRACKING AQUÍ */
                     initial={{ y: 0 }}
                     animate={heroButtonFloat.animate}
                     whileHover={{ scale: 1.02 }}
@@ -394,54 +407,135 @@ export default function App() {
             </div>
           </section>
 
-          <section className="space-y-8 bg-teal-900 text-white rounded-[36px] p-10 md:p-14 shadow-[0_25px_70px_rgba(4,78,67,0.45)]">
+          <section className="relative overflow-hidden rounded-[48px] bg-gradient-to-br from-teal-700/95 to-teal-900/95 px-6 py-12 md:px-10 md:py-14 lg:px-16 lg:py-20 shadow-[0_25px_80px_rgba(15,118,110,0.45)]">
+            <div className="absolute -right-10 top-[-20px] h-32 w-32 rounded-full bg-white/10 blur-[80px]" />
+            <div className="absolute left-[-10%] bottom-[-30px] h-56 w-56 rounded-[52%] bg-white/5 blur-[110px]" />
+            {/* AJUSTAR FORMAS DECORATIVAS AQUÍ */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              className="relative z-10 mx-auto max-w-4xl text-center space-y-6"
             >
               <p className="text-xs uppercase tracking-[0.4em] text-teal-200">¿Listo para iniciar?</p>
-              <h2 className="text-3xl md:text-4xl font-serif">
-                Reserva un espacio seguro para redescubrir tu bienestar.
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                {/* CAMBIAR TEXTO PRINCIPAL DE CTA AQUÍ */}
+                El proceso terapéutico es un viaje hacia tu interior, donde cada paso cuenta para reconstruir tu bienestar.
               </h2>
-            </motion.div>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <a
-                href="#contacto"
-                className="inline-flex items-center justify-center rounded-full bg-white text-teal-900 font-bold px-8 py-3 shadow-lg shadow-teal-900/30 transition hover:-translate-y-0.5"
-              >
-                Agenda ahora
-              </a>
-              <p className="text-sm text-teal-100/70 max-w-2xl">
-                Contáctame por WhatsApp o correo electrónico y coordinemos la primera sesión en la modalidad
-                que te resulte más cómoda.
+              <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                {/* AJUSTAR TIPOGRAFÍA DE BOTONES AQUÍ */}
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-bold tracking-normal text-teal-900 shadow-lg shadow-teal-900/40 transition hover:-translate-y-0.5" /* CAMBIAR TRACKING AQUÍ */
+                >
+                  {/* CAMBIAR TEXTO DEL BOTÓN AQUÍ */}
+                  Agenda tu primera sesión
+                </a>
+                <p className="max-w-xl text-sm text-white/80">
+                  {/* CAMBIAR LINK DE CTA AQUÍ */}
+                  Conecta directamente por WhatsApp y coordinemos un espacio que se adapte a tu tiempo y ritmo.
+                </p>
+              </div>
+              <p className="text-xs uppercase tracking-[0.4em] text-teal-200/70">
+                {/* EDITAR NÚMERO DE WHATSAPP AQUÍ */}
+                {whatsappNumber}
               </p>
-            </div>
+            </motion.div>
+            {/* AJUSTAR COLORES DE LA CTA AQUÍ */}
+            {/* AJUSTAR PADDING / BORDES / SOMBRAS AQUÍ */}
           </section>
 
-          <footer
-            id="contacto"
-            className="border-t border-teal-100 pt-12 pb-8 flex flex-col gap-8 md:flex-row md:justify-between"
-          >
-            <div className="max-w-xl space-y-3">
-              <p className="text-xs uppercase tracking-[0.4em] text-teal-500 font-semibold">Contacto</p>
-              <p className="text-3xl font-serif text-teal-900 dark:text-teal-100">Carolina Valenzuela</p>
-              <p className="text-teal-900/70 dark:text-teal-100/70">
-                Psicóloga clínica enfocada en generar terapias cálidas, privadas y basadas en evidencia.
-              </p>
-            </div>
-            <div className="grid gap-4 text-sm text-teal-900/80 dark:text-teal-100/80">
-              <div className="flex items-center gap-3">
-                <MessageCircle size={18} className="text-teal-600" />
-                <span>WhatsApp: +56 9 1234 5678</span>
+          <footer id="contacto" className="border-t border-teal-100 pt-12 pb-8">
+            <div className="max-w-6xl mx-auto px-6">
+              <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-4 mb-10">
+                <div className="xl:col-span-2 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold">
+                      CV
+                    </div>
+                    <h3 className="text-xl font-serif text-teal-900 dark:text-teal-100">
+                      {/* CAMBIAR NOMBRE PRINCIPAL DEL FOOTER AQUÍ */}
+                      Carolina Valenzuela
+                    </h3>
+                  </div>
+
+                  {/* EDITAR TEXTO DESCRIPTIVO AQUÍ */}
+                  <p className="text-sm text-teal-900/70 dark:text-teal-100/70 max-w-md">
+                    Brindando apoyo psicológico profesional para ayudarte a navegar los desafíos de la vida con resiliencia y claridad mental.
+                  </p>
+
+                  {/* EDITAR REDES SOCIALES AQUÍ */}
+                  <div className="flex gap-3">
+  <a
+    href="#"
+    className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm"
+  >
+    <Instagram size={20} />
+  </a>
+
+  <a
+    href="#"
+    className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm"
+  >
+    <Linkedin size={20} />
+  </a>
+
+  <a
+    href="#"
+    className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm"
+  >
+    <Mail size={20} />
+  </a>
+</div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-xs uppercase tracking-[0.25em] text-teal-500 font-semibold">
+                    Contacto
+                  </h4>
+
+                  {/* EDITAR DATOS DE CONTACTO AQUÍ */}
+                  <div className="space-y-3 text-sm text-teal-900/80 dark:text-teal-100/80">
+                    <p>WhatsApp: +56 9 1234 5678</p>
+                    <p>contacto@carolinavalenzuela.cl</p>
+                    <p>Lun - Vie · 09:00 - 19:00</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="text-xs uppercase tracking-[0.25em] text-teal-500 font-semibold">
+                    Ubicación
+                  </h4>
+
+                  {/* EDITAR DIRECCIÓN AQUÍ */}
+                  <div className="space-y-2 text-sm text-teal-900/80 dark:text-teal-100/80">
+                    <p>
+                      Edificio Centro Médico, Of. 402
+                      <br />
+                      Las Condes, Santiago de Chile.
+                    </p>
+                  </div>
+
+                  {/* CAMBIAR LINK DE MAPA AQUÍ */}
+                  <a href="#" className="text-sm font-semibold text-teal-600 underline">
+                    Ver en Mapa
+                  </a>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail size={18} className="text-teal-600" />
-                <span>contacto@carolinavalenzuela.cl</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Calendar size={18} className="text-teal-600" />
-                <span>Lun - Vie · 09:00 - 19:00</span>
+
+              <div className="border-t border-teal-100 pt-6 flex flex-col gap-4 text-xs text-teal-500 md:flex-row md:items-center md:justify-between">
+                <p>
+                  {/* CAMBIAR TEXTO LEGAL AQUÍ */}
+                  © {new Date().getFullYear()} Carolina Valenzuela — Psicología & Bienestar
+                </p>
+
+                {/* EDITAR LINKS LEGALES AQUÍ */}
+                <div className="flex gap-6">
+                  <a href="#">Privacidad</a>
+                  <a href="#">Términos</a>
+                </div>
               </div>
             </div>
           </footer>
