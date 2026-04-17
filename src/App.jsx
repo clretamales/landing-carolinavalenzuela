@@ -87,21 +87,25 @@ const serviceCards = [
     icon: Flower2, /* CAMBIAR ÍCONO AQUÍ */
     title: 'Terapia Individual', /* EDITAR TÍTULO DE CARD AQUÍ */
     description: 'Procesos de autoconocimiento y manejo de ansiedad.', /* EDITAR DESCRIPCIÓN DE CARD AQUÍ */
+    backText: 'Profundizamos en tus recursos internos para sostener cambios reales y duraderos.',
   },
   {
     icon: Users, /* CAMBIAR ÍCONO AQUÍ */
     title: 'Terapia de Pareja', /* EDITAR TÍTULO DE CARD AQUÍ */
     description: 'Comunicación y resolución de conflictos vinculares.', /* EDITAR DESCRIPCIÓN DE CARD AQUÍ */
+    backText: 'Creamos un espacio seguro para reconstruir acuerdos y fortalecer el vínculo afectivo.',
   },
   {
     icon: Globe, /* CAMBIAR ÍCONO AQUÍ */
     title: 'Adolescentes', /* EDITAR TÍTULO DE CARD AQUÍ */
     description: 'Acompañamiento en etapas críticas de desarrollo.', /* EDITAR DESCRIPCIÓN DE CARD AQUÍ */
+    backText: 'Acompañamiento respetuoso para potenciar identidad, regulación emocional y confianza.',
   },
   {
     icon: Star, /* CAMBIAR ÍCONO AQUÍ */
     title: 'Sesiones Online', /* EDITAR TÍTULO DE CARD AQUÍ */
     description: 'Flexibilidad total desde la comodidad de tu hogar.', /* EDITAR DESCRIPCIÓN DE CARD AQUÍ */
+    backText: 'Un proceso terapéutico cercano y profesional, adaptado a tu ritmo y disponibilidad.',
   },
 ]
 
@@ -158,6 +162,14 @@ const SectionHeader = ({ subtitle, title }) => (
 export default function App() {
   const [isDark, setIsDark] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [flippedCards, setFlippedCards] = useState({})
+
+  const toggleServiceCard = (index, value) => {
+    setFlippedCards((prev) => ({
+      ...prev,
+      [index]: typeof value === 'boolean' ? value : !prev[index],
+    }))
+  }
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 30)
@@ -358,10 +370,10 @@ export default function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="rounded-3xl border border-teal-100 bg-emerald-50/50 p-6 shadow-[0_15px_30px_rgba(15,118,110,0.08)] flex flex-col gap-4 dark:border-white/10 dark:bg-slate-900/50 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)]"
+                  className="group flex transform flex-col items-center gap-4 rounded-3xl border border-teal-100 bg-emerald-50/50 p-6 text-center shadow-[0_15px_30px_rgba(15,118,110,0.08)] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-teal-200/90 hover:bg-gradient-to-br hover:from-teal-50 hover:to-white dark:border-white/10 dark:bg-slate-900/50 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:border-teal-400/30 dark:hover:from-slate-800 dark:hover:to-slate-900"
                 >
-                  <div className="h-12 w-12 rounded-2xl bg-white/90 border border-teal-100 grid place-items-center text-teal-600">
-                    <card.icon size={20} />
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-teal-100 bg-teal-50 text-teal-600 transition-all duration-500 group-hover:bg-teal-100 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-300 dark:group-hover:bg-slate-700">
+                    <card.icon size={20} className="transition-colors duration-500 group-hover:text-teal-700 dark:group-hover:text-teal-200" />
                   </div>
                   <h3 className="text-xl font-semibold text-teal-900 dark:text-teal-100">{card.title}</h3>
                   <p className="text-sm text-teal-900/80 leading-relaxed dark:text-teal-100/80">
@@ -380,27 +392,62 @@ export default function App() {
             {/* CAMBIAR TÍTULO PRINCIPAL DE SERVICIOS AQUÍ */}
             <SectionHeader subtitle="Especialidades" title="Acompañamiento a tu medida" />
             <div className="mt-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-              {serviceCards.map((card) => (
+              {serviceCards.map((card, index) => (
                 <motion.article
                   key={card.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="relative rounded-[40px] border border-teal-100 bg-white/90 p-6 shadow-[0_20px_50px_rgba(15,118,110,0.08)] flex flex-col gap-6 min-h-[260px] dark:border-white/10 dark:bg-slate-900/60 dark:shadow-[0_25px_60px_rgba(2,63,67,0.45)]"
+                  className="group relative min-h-[360px]"
+                  style={{ perspective: '1200px' }}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-teal-50 grid place-items-center text-teal-600 shadow-inner">
-                      {/* CAMBIAR ÍCONO AQUÍ */}
-                      <card.icon size={20} />
+                  <div
+                    className="relative h-full min-h-[360px] w-full transform-gpu transition-all duration-500 hover:-translate-y-2"
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      transform: flippedCards[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                    }}
+                  >
+                    <div
+                      className="absolute inset-0 flex min-h-[360px] flex-col rounded-[40px] border border-teal-100 bg-white/90 p-6 text-center shadow-[0_20px_50px_rgba(15,118,110,0.08)] transition-all duration-500 hover:shadow-2xl hover:bg-gradient-to-br hover:from-teal-50 hover:to-white dark:border-white/10 dark:bg-slate-900/60 dark:shadow-[0_25px_60px_rgba(2,63,67,0.45)] dark:hover:from-slate-800 dark:hover:to-slate-900"
+                      style={{ backfaceVisibility: 'hidden' }}
+                    >
+                      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-teal-50 text-teal-600 shadow-inner transition-all duration-500 group-hover:bg-teal-100 group-hover:text-teal-700 dark:bg-slate-800 dark:text-teal-300 dark:group-hover:bg-slate-700 dark:group-hover:text-teal-200">
+                        <card.icon size={24} />
+                      </div>
+                      <h3 className="mt-5 text-xl font-semibold text-teal-900 dark:text-teal-100">{card.title}</h3>
+                      <p className="mt-3 text-sm leading-relaxed text-teal-900/70 dark:text-teal-100/70">{card.description}</p>
+                      <button
+                        type="button"
+                        onClick={() => toggleServiceCard(index, true)}
+                        className="mt-auto inline-flex items-center justify-center gap-1 pt-6 text-xs font-bold uppercase tracking-[0.35em] text-teal-600 transition-colors hover:text-teal-700 dark:text-teal-300 dark:hover:text-teal-200"
+                        aria-label={`Ver mas sobre ${card.title}`}
+                      >
+                        <span>{servicesLinkText}</span>
+                        {/* CAMBIAR TEXTO DEL LINK AQUÍ */}
+                        <ChevronRight size={16} />
+                      </button>
                     </div>
-                    <h3 className="text-xl font-semibold text-teal-900 dark:text-teal-100">{card.title}</h3>
-                  </div>
-                  <p className="text-sm text-teal-900/70 leading-relaxed dark:text-teal-100/70">{card.description}</p>
-                  <div className="mt-auto flex items-center gap-1 text-xs uppercase tracking-[0.4em] text-teal-600 font-bold">
-                    <span>{servicesLinkText}</span>
-                    {/* CAMBIAR TEXTO DEL LINK AQUÍ */}
-                    <ChevronRight size={16} />
+
+                    <div
+                      className="absolute inset-0 flex min-h-[360px] flex-col rounded-[40px] border border-teal-100 bg-gradient-to-br from-teal-50 to-white p-6 text-center shadow-[0_20px_50px_rgba(15,118,110,0.1)] transition-all duration-500 hover:shadow-2xl dark:border-white/10 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-900 dark:shadow-[0_25px_60px_rgba(2,63,67,0.45)]"
+                      style={{
+                        backfaceVisibility: 'hidden',
+                        transform: 'rotateY(180deg)',
+                      }}
+                    >
+                      <h3 className="mt-2 text-xl font-semibold text-teal-900 dark:text-teal-100">{card.title}</h3>
+                      <p className="mt-6 text-sm leading-relaxed text-teal-900/80 dark:text-teal-100/80">{card.backText}</p>
+                      <button
+                        type="button"
+                        onClick={() => toggleServiceCard(index, false)}
+                        className="mt-auto inline-flex items-center justify-center rounded-full border border-teal-200 px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-700 transition-all duration-300 hover:bg-teal-100 dark:border-slate-600 dark:text-teal-200 dark:hover:bg-slate-700"
+                        aria-label={`Volver a la vista frontal de ${card.title}`}
+                      >
+                        Volver
+                      </button>
+                    </div>
                   </div>
                 </motion.article>
               ))}
