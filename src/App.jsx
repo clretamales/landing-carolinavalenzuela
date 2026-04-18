@@ -496,8 +496,8 @@ export default function App() {
 
           <footer id="contacto" className="border-t border-teal-100 pt-12 pb-8">
             <div className="max-w-6xl mx-auto px-6">
-              <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-4 mb-10">
-                <div className="xl:col-span-2 space-y-4">
+              <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
+                <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold">
                       CV
@@ -515,27 +515,27 @@ export default function App() {
 
                   {/* EDITAR REDES SOCIALES AQUÍ */}
                   <div className="flex gap-3">
-  <a
-    href="#"
-    className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm"
-  >
-    <Instagram size={20} />
-  </a>
+                    <a
+                      href="#"
+                      className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
+                    >
+                      <Instagram size={20} />
+                    </a>
 
-  <a
-    href="#"
-    className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm"
-  >
-    <Linkedin size={20} />
-  </a>
+                    <a
+                      href="#"
+                      className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
+                    >
+                      <Linkedin size={20} />
+                    </a>
 
-  <a
-    href="#"
-    className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm"
-  >
-    <Mail size={20} />
-  </a>
-</div>
+                    <a
+                      href="#"
+                      className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
+                    >
+                      <Mail size={20} />
+                    </a>
+                  </div>
                 </div>
 
                 <div className="space-y-4">
@@ -556,23 +556,41 @@ export default function App() {
                     Ubicación
                   </h4>
 
-                  {/* EDITAR DIRECCIÓN AQUÍ */}
-                  <div className="space-y-2 text-sm text-teal-900/80 dark:text-teal-100/80">
-                    <p>
-                      Edificio Centro Médico, Of. 402
-                      <br />
-                      Las Condes, Santiago de Chile.
-                    </p>
+                  <div className="space-y-3 text-sm text-teal-900/80 dark:text-teal-100/80">
+                    <p>Domeyko 1835, Santiago, Región Metropolitana, Chile</p>
+                    <p>Atención psicológica en Santiago, en un espacio accesible y bien conectado.</p>
                   </div>
-
-                  {/* CAMBIAR LINK DE MAPA AQUÍ */}
-                  <a href="#" className="text-sm font-semibold text-teal-600 underline">
-                    Ver en Mapa
-                  </a>
                 </div>
               </div>
 
-              <div className="border-t border-teal-100 pt-6 flex flex-col gap-4 text-xs text-teal-500 md:flex-row md:items-center md:justify-between">
+              <div className="mt-10 space-y-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <h4 className="text-xs uppercase tracking-[0.25em] text-teal-500 font-semibold">
+                    Mapa
+                  </h4>
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=Domeyko+1835+Santiago+Chile"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex w-fit items-center justify-center rounded-full border border-teal-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md dark:border-white/15 dark:bg-slate-900 dark:text-teal-200"
+                  >
+                    Cómo llegar
+                  </a>
+                </div>
+
+                <div className="overflow-hidden rounded-3xl border border-black/5 shadow-lg dark:border-white/10">
+                  <iframe
+                    title="Ubicación consulta"
+                    src="https://www.google.com/maps?q=Domeyko+1835,+Santiago,+Chile&output=embed"
+                    className="h-[280px] w-full md:h-[320px] lg:h-[380px]"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+
+              <div className="mt-10 border-t border-teal-100 pt-6 flex flex-col gap-4 text-xs text-teal-500 md:flex-row md:items-center md:justify-between">
                 <p>
                   {/* CAMBIAR TEXTO LEGAL AQUÍ */}
                   © {new Date().getFullYear()} Carolina Valenzuela — Psicología & Bienestar
