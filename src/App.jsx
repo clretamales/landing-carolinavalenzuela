@@ -368,9 +368,10 @@ export default function App() {
                   key={card.title}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -10, scale: 1.01 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="group flex transform flex-col items-center gap-4 rounded-3xl border border-teal-100 bg-emerald-50/50 p-6 text-center shadow-[0_15px_30px_rgba(15,118,110,0.08)] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-teal-200/90 hover:bg-gradient-to-br hover:from-teal-50 hover:to-white dark:border-white/10 dark:bg-slate-900/50 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:border-teal-400/30 dark:hover:from-slate-800 dark:hover:to-slate-900"
+                  className="group flex transform-gpu flex-col items-center gap-4 rounded-3xl border border-teal-100 bg-emerald-50/50 p-6 text-center shadow-[0_15px_30px_rgba(15,118,110,0.08)] transition-all duration-300 ease-out hover:shadow-xl hover:border-teal-200/90 hover:bg-gradient-to-br hover:from-teal-50 hover:to-white dark:border-white/10 dark:bg-slate-900/50 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:border-teal-400/30 dark:hover:from-slate-800 dark:hover:to-slate-900"
                 >
                   <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-teal-100 bg-teal-50 text-teal-600 transition-all duration-500 group-hover:bg-teal-100 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-300 dark:group-hover:bg-slate-700">
                     <card.icon size={20} className="transition-colors duration-500 group-hover:text-teal-700 dark:group-hover:text-teal-200" />
@@ -397,13 +398,14 @@ export default function App() {
                   key={card.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -10, scale: 1.01 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                   className="group relative min-h-[360px]"
                   style={{ perspective: '1200px' }}
                 >
                   <div
-                    className="relative h-full min-h-[360px] w-full transform-gpu transition-all duration-500 hover:-translate-y-2"
+                    className="relative h-full min-h-[360px] w-full transform-gpu transition-all duration-500"
                     style={{
                       transformStyle: 'preserve-3d',
                       transform: flippedCards[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
