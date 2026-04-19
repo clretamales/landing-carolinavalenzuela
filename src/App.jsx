@@ -291,22 +291,24 @@ export default function App() {
                   {/* CONTROLAR MAYÚSCULAS / MINÚSCULAS AQUÍ */}
                   <motion.a
                     href="#contacto"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-700 text-white font-semibold tracking-normal shadow-lg shadow-teal-700/30 transition-transform hover:-translate-y-0.5" /* CAMBIAR TRACKING AQUÍ */
-                    initial={{ y: 0 }}
-                    animate={heroButtonFloat.animate}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-700 text-white font-semibold tracking-normal shadow-lg shadow-teal-700/30 transition-all duration-300 ease-out hover:shadow-xl hover:shadow-teal-700/40" /* CAMBIAR TRACKING AQUÍ */
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
                   >
                     {/* ANIMACIÓN DEL BOTÓN PRINCIPAL AQUÍ */}
                     Agenda una sesión
                     <span aria-hidden="true">↗</span>
                   </motion.a>
-                  <a
-                    className="px-6 py-3 rounded-full border border-teal-200 text-teal-700 font-semibold hover:border-teal-400 transition"
+                  <motion.a
+                    className="px-6 py-3 rounded-full border border-teal-200 bg-white/70 text-teal-700 font-semibold shadow-md shadow-teal-900/10 transition-all duration-300 ease-out hover:border-teal-400 hover:shadow-xl hover:shadow-teal-900/15 dark:border-teal-400/40 dark:bg-slate-900/40 dark:text-teal-100"
                     href="#enfoque"
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
                   >
                     Conoce el enfoque
-                  </a>
+                  </motion.a>
                 </div>
               </motion.div>
 
@@ -314,21 +316,21 @@ export default function App() {
                 initial={{ opacity: 0, x: 60 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.9 }}
-                className="relative flex justify-end"
+                className="relative flex justify-center"
               >
-                <div className="relative overflow-visible">
-                  <div className="w-[320px] lg:w-[360px] h-[520px] rounded-[56px] border-8 border-white bg-white shadow-[0_25px_60px_rgba(4,78,67,0.35)] overflow-hidden dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-[0_25px_60px_rgba(2,63,67,0.55)]">
+                <div className="relative mx-auto w-full max-w-[460px] lg:max-w-[500px]">
+                  <div className="h-[520px] w-full overflow-hidden rounded-[56px] border-8 border-white bg-white shadow-[0_25px_60px_rgba(4,78,67,0.35)] dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-[0_25px_60px_rgba(2,63,67,0.55)]">
                     <img
                       src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80"
                       alt="Terapia con acompañamiento humano"
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                   {/* CENTRADO DE LA TARJETA FLOTANTE AQUÍ */}
                   {/* AJUSTAR POSICIÓN VERTICAL DE LA TARJETA AQUÍ */}
                   {/* AJUSTES RESPONSIVE TABLET / MOBILE AQUÍ */}
                   <motion.div
-                    className="absolute left-4 bottom-[6px] w-[220px] border border-teal-100 bg-white rounded-3xl shadow-lg shadow-teal-900/10 p-5 flex items-center gap-3 dark:border-white/10 dark:bg-slate-900/70 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] md:left-6 md:bottom-[4px] lg:left-8 lg:bottom-[-8px]"
+                    className="group absolute bottom-0 left-1/2 flex w-[220px] -translate-x-1/2 items-center gap-4 rounded-3xl border border-teal-100 bg-white/95 px-4 py-3 shadow-lg shadow-teal-900/10 transition-all duration-300 ease-out hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] dark:border-white/10 dark:bg-slate-900/80 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:bg-slate-900"
                     animate={{
                       y: [0, 18, 6, 0],
                       /* AJUSTAR ANIMACIÓN EXISTENTE AQUÍ */
@@ -339,16 +341,16 @@ export default function App() {
                       ease: 'easeInOut',
                     }}
                     /* AJUSTAR DISTANCIA Y VELOCIDAD DE LA ANIMACIÓN AQUÍ */
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-teal-50 flex items-center justify-center text-teal-600">
-                      <Heart size={20} />
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.3em] text-teal-500 font-semibold">
-                        Atención Integral
-                      </p>
-                      <p className="text-sm text-teal-900/80 dark:text-teal-100/80">Presencial y online</p>
-                    </div>
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-600">
+                        <Heart size={18} />
+                      </div>
+                      <div className="space-y-0.5">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-teal-500 transition-all duration-300 group-hover:text-teal-600">
+                          Atención Integral
+                        </p>
+                        <p className="text-sm leading-tight text-teal-900/80 dark:text-teal-100/80">Presencial y online</p>
+                      </div>
                     {/* DESACTIVAR ANIMACIÓN AQUÍ */}
                   </motion.div>
                 </div>
