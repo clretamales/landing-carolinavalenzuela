@@ -19,7 +19,7 @@ import {
   Instagram,
   Linkedin,
 } from 'lucide-react'
-import fotoHero from './assets/images/fotoc.png'
+import fotoHero from './assets/images/fotoc.webp'
 
 const WireframeSphere = ({ className = '' }) => (
   <svg
