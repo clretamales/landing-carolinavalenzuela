@@ -111,7 +111,7 @@ const serviceCards = [
 
 const servicesLinkText = 'SABER MÁS' /* CAMBIAR TEXTO DEL LINK AQUÍ */
 
-const whatsappNumber = '+56912345678' /* EDITAR NÚMERO DE WHATSAPP AQUÍ */
+const whatsappNumber = '+56995371195' /* EDITAR NÚMERO DE WHATSAPP AQUÍ */
 const whatsappMessage = 'Hola%20Carolina,%20quiero%20coordinar%20mi%20primera%20sesión.' /* EDITAR MENSAJE INICIAL DE WHATSAPP AQUÍ */
 const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${whatsappMessage}` /* CAMBIAR LINK DE CTA AQUÍ */
 
@@ -223,7 +223,7 @@ export default function App() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="transition-colors text-teal-900 hover:text-teal-900 dark:text-teal-100 dark:hover:text-white font-medium tracking-normal"
+                  className="rounded-full px-3 py-2 font-medium tracking-normal text-teal-900 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-teal-50 hover:text-teal-700 hover:shadow-sm dark:text-teal-100 dark:hover:bg-white/10 dark:hover:text-white"
                 >
                   {link.label}
                 </a>
@@ -370,7 +370,7 @@ export default function App() {
                   key={card.title}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  whileHover={{ y: -10, scale: 1.01 }}
+                  whileHover={{ y: -10 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                   className="group flex transform-gpu flex-col items-center gap-4 rounded-3xl border border-teal-100 bg-emerald-50/50 p-6 text-center shadow-[0_15px_30px_rgba(15,118,110,0.08)] transition-all duration-300 ease-out hover:shadow-xl hover:border-teal-200/90 hover:bg-gradient-to-br hover:from-teal-50 hover:to-white dark:border-white/10 dark:bg-slate-900/50 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:border-teal-400/30 dark:hover:from-slate-800 dark:hover:to-slate-900"
@@ -407,7 +407,7 @@ export default function App() {
                   style={{ perspective: '1200px' }}
                 >
                   <div
-                    className="relative h-full min-h-[360px] w-full transform-gpu transition-all duration-500"
+                    className="relative h-full min-h-[360px] w-full transition-all duration-500"
                     style={{
                       transformStyle: 'preserve-3d',
                       transform: flippedCards[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -458,47 +458,38 @@ export default function App() {
             </div>
           </section>
 
-          <section className="relative overflow-hidden rounded-[48px] bg-gradient-to-br from-teal-700/95 to-teal-900/95 px-6 py-12 md:px-10 md:py-14 lg:px-16 lg:py-20 shadow-[0_25px_80px_rgba(15,118,110,0.45)]">
-            <div className="absolute -right-10 top-[-20px] h-32 w-32 rounded-full bg-white/10 blur-[80px]" />
-            <div className="absolute left-[-10%] bottom-[-30px] h-56 w-56 rounded-[52%] bg-white/5 blur-[110px]" />
+          <section
+            id="contacto"
+            className="relative overflow-hidden rounded-[48px] bg-gradient-to-br from-teal-700/95 to-teal-900/95 px-6 py-12 md:px-10 md:py-14 lg:px-16 lg:py-20 shadow-[0_25px_80px_rgba(15,118,110,0.45)]"
+          >
             {/* AJUSTAR FORMAS DECORATIVAS AQUÍ */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="relative z-10 mx-auto max-w-4xl text-center space-y-6"
+              className="relative z-10 mx-auto max-w-3xl space-y-8 text-center"
             >
-              <p className="text-xs uppercase tracking-[0.4em] text-teal-200">¿Listo para iniciar?</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+              <h2 className="mx-auto max-w-4xl font-serif text-3xl italic leading-[1.35] text-white md:text-5xl lg:text-6xl">
                 {/* CAMBIAR TEXTO PRINCIPAL DE CTA AQUÍ */}
-                El proceso terapéutico es un viaje hacia tu interior, donde cada paso cuenta para reconstruir tu bienestar.
+                “El proceso terapéutico es un viaje hacia tu interior, donde cada paso cuenta para reconstruir tu bienestar.”
               </h2>
-              <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                {/* AJUSTAR TIPOGRAFÍA DE BOTONES AQUÍ */}
+              <div className="flex flex-col items-center gap-4">
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-bold tracking-normal text-teal-900 shadow-lg shadow-teal-900/40 transition hover:-translate-y-0.5" /* CAMBIAR TRACKING AQUÍ */
+                  className="inline-flex min-w-[320px] items-center justify-center rounded-full bg-white px-10 py-5 text-base font-bold tracking-normal text-teal-900 shadow-lg shadow-teal-900/30 transition hover:-translate-y-0.5 md:min-w-[420px] md:text-lg"
                 >
                   {/* CAMBIAR TEXTO DEL BOTÓN AQUÍ */}
                   Agenda tu primera sesión
                 </a>
-                <p className="max-w-xl text-sm text-white/80">
-                  {/* CAMBIAR LINK DE CTA AQUÍ */}
-                  Conecta directamente por WhatsApp y coordinemos un espacio que se adapte a tu tiempo y ritmo.
-                </p>
               </div>
-              <p className="text-xs uppercase tracking-[0.4em] text-teal-200/70">
-                {/* EDITAR NÚMERO DE WHATSAPP AQUÍ */}
-                {whatsappNumber}
-              </p>
             </motion.div>
             {/* AJUSTAR COLORES DE LA CTA AQUÍ */}
             {/* AJUSTAR PADDING / BORDES / SOMBRAS AQUÍ */}
           </section>
 
-          <footer id="contacto" className="border-t border-teal-100 pt-12 pb-8">
+          <footer className="border-t border-teal-100 pt-12 pb-8">
             <div className="max-w-6xl mx-auto px-6">
               <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
                 <div className="space-y-4">
@@ -549,7 +540,7 @@ export default function App() {
 
                   {/* EDITAR DATOS DE CONTACTO AQUÍ */}
                   <div className="space-y-3 text-sm text-teal-900/80 dark:text-teal-100/80">
-                    <p>WhatsApp: +56 9 1234 5678</p>
+                    <p>WhatsApp: +56 9 9537 1195</p>
                     <p>contacto@carolinavalenzuela.cl</p>
                     <p>Lun - Vie · 09:00 - 19:00</p>
                   </div>
