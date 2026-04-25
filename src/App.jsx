@@ -163,6 +163,13 @@ export default function App() {
   const [isDark, setIsDark] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [flippedCards, setFlippedCards] = useState({})
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: '',
+  })
 
   const toggleServiceCard = (index, value) => {
     setFlippedCards((prev) => ({
@@ -171,11 +178,52 @@ export default function App() {
     }))
   }
 
+  const closeContactModal = () => {
+    setIsContactModalOpen(false)
+    setContactForm({
+      name: '',
+      phone: '',
+      email: '',
+      message: '',
+    })
+  }
+
+  const handleContactSubmit = (event) => {
+    event.preventDefault()
+
+    const subject = encodeURIComponent('Consulta desde sitio web')
+    const body = encodeURIComponent(
+      `Nombre: ${contactForm.name}\nTeléfono: ${contactForm.phone}\nEmail: ${contactForm.email}\nMensaje: ${contactForm.message}`,
+    )
+
+    window.location.href = `mailto:contacto@carolinavalenzuela.cl?subject=${subject}&body=${body}`
+    closeContactModal()
+  }
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 30)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    if (!isContactModalOpen) return undefined
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsContactModalOpen(false)
+        setContactForm({
+          name: '',
+          phone: '',
+          email: '',
+          message: '',
+        })
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isContactModalOpen])
   /* NAVBAR STICKY AQUÍ */
 
   return (
@@ -511,25 +559,31 @@ export default function App() {
                   {/* EDITAR REDES SOCIALES AQUÍ */}
                   <div className="flex gap-3">
                     <a
-                      href="#"
+                      href="https://www.instagram.com/ps.carolinavalenzuela_/"
+                      target="_blank"
+                      rel="noreferrer"
                       className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
                     >
                       <Instagram size={20} />
                     </a>
 
                     <a
-                      href="#"
+                      href="https://www.linkedin.com/in/carolina-valenzuela-jara-b050a437b/"
+                      target="_blank"
+                      rel="noreferrer"
                       className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
                     >
                       <Linkedin size={20} />
                     </a>
 
-                    <a
-                      href="#"
+                    <button
+                      type="button"
+                      onClick={() => setIsContactModalOpen(true)}
                       className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
+                      aria-label="Abrir formulario de contacto"
                     >
                       <Mail size={20} />
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -591,19 +645,133 @@ export default function App() {
                   © {new Date().getFullYear()} Carolina Valenzuela — Psicología & Bienestar
                 </p>
 
-                {/* EDITAR LINKS LEGALES AQUÍ */}
-                <div className="flex gap-6">
-                  <a href="#">Privacidad</a>
-                  <a href="#">Términos</a>
-                </div>
+                <p className="text-xs text-teal-500">
+                  Construido por Arquetipo Digital
+                </p>
               </div>
             </div>
           </footer>
-
-          <div className="text-[11px] uppercase tracking-[0.6em] text-teal-500 text-center pb-6">
-            © {new Date().getFullYear()} Carolina Valenzuela · Clínica privada premium
-          </div>
         </main>
+
+        {isContactModalOpen ? (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeContactModal}
+          >
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="contact-modal-title"
+              className="relative w-full max-w-2xl rounded-[32px] border border-teal-100 bg-white p-6 shadow-2xl shadow-slate-950/30 dark:border-white/10 dark:bg-slate-950 sm:p-8"
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={closeContactModal}
+                className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-teal-100 text-xl text-teal-600 transition hover:bg-teal-50 hover:text-teal-700 dark:border-white/10 dark:text-teal-200 dark:hover:bg-white/5"
+                aria-label="Cerrar formulario"
+              >
+                ×
+              </button>
+
+              <div className="space-y-3">
+                <p className="text-xs uppercase tracking-[0.35em] text-teal-500">Contacto</p>
+                <h2 id="contact-modal-title" className="text-3xl font-serif text-teal-900 dark:text-teal-100">
+                  Contáctanos
+                </h2>
+                <p className="text-sm leading-relaxed text-teal-900/70 dark:text-teal-100/70">
+                  Completa el siguiente formulario y te responderemos a la brevedad.
+                </p>
+              </div>
+
+              <form className="mt-8 space-y-5" onSubmit={handleContactSubmit}>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-600 dark:text-teal-200">
+                      Nombre
+                    </span>
+                    <input
+                      type="text"
+                      value={contactForm.name}
+                      onChange={(event) =>
+                        setContactForm((prev) => ({ ...prev, name: event.target.value }))
+                      }
+                      className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
+                      placeholder="Tu nombre"
+                    />
+                  </label>
+
+                  <label className="space-y-2">
+                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-600 dark:text-teal-200">
+                      Teléfono
+                    </span>
+                    <input
+                      type="tel"
+                      value={contactForm.phone}
+                      onChange={(event) =>
+                        setContactForm((prev) => ({ ...prev, phone: event.target.value }))
+                      }
+                      className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
+                      placeholder="+56 9..."
+                    />
+                  </label>
+                </div>
+
+                <label className="block space-y-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-600 dark:text-teal-200">
+                    Email
+                  </span>
+                  <input
+                    type="email"
+                    value={contactForm.email}
+                    onChange={(event) =>
+                      setContactForm((prev) => ({ ...prev, email: event.target.value }))
+                    }
+                    className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
+                    placeholder="tu@email.com"
+                  />
+                </label>
+
+                <label className="block space-y-2">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-600 dark:text-teal-200">
+                    Mensaje
+                  </span>
+                  <textarea
+                    rows="5"
+                    value={contactForm.message}
+                    onChange={(event) =>
+                      setContactForm((prev) => ({ ...prev, message: event.target.value }))
+                    }
+                    className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
+                    placeholder="Cuéntanos cómo podemos ayudarte"
+                  />
+                </label>
+
+                <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-end">
+                  <button
+                    type="button"
+                    onClick={closeContactModal}
+                    className="inline-flex items-center justify-center rounded-full border border-teal-100 px-6 py-3 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 dark:border-white/10 dark:text-teal-200 dark:hover:bg-white/5"
+                  >
+                    Cerrar
+                  </button>
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center rounded-full bg-teal-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition hover:-translate-y-0.5 hover:bg-teal-700"
+                  >
+                    Enviar
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        ) : null}
       </div>
     </div>
   )
