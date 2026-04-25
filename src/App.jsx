@@ -19,6 +19,7 @@ import {
   Instagram,
   Linkedin,
 } from 'lucide-react'
+import fotoHero from './assets/images/fotoc.png'
 
 const WireframeSphere = ({ className = '' }) => (
   <svg
@@ -369,8 +370,8 @@ export default function App() {
                 <div className="relative mx-auto w-full max-w-[460px] lg:max-w-[500px]">
                   <div className="h-[520px] w-full overflow-hidden rounded-[56px] border-8 border-white bg-white shadow-[0_25px_60px_rgba(4,78,67,0.35)] dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-[0_25px_60px_rgba(2,63,67,0.55)]">
                     <img
-                      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80"
-                      alt="Terapia con acompañamiento humano"
+                      src={fotoHero}
+                      alt="Psicoterapia presencial en Santiago - Carolina Valenzuela"
                       className="h-full w-full object-cover"
                     />
                   </div>
@@ -380,12 +381,13 @@ export default function App() {
                   <motion.div
                     className="group absolute bottom-0 right-1/2 flex w-[240px] -translate-x-1/2 items-center gap-4 rounded-3xl border border-teal-100 bg-white/95 px-4 py-3 shadow-lg shadow-teal-900/10 transition-all duration-300 ease-out hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] dark:border-white/10 dark:bg-slate-900/80 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:bg-slate-900"
                     animate={{
-                      y: [-6, 8, 8, -6],
+                      y: [-6, 8, -6],
                       /* AJUSTAR ANIMACIÓN EXISTENTE AQUÍ */
                     }}
                     transition={{
-                      duration: 8,
+                      duration: 6,
                       repeat: Infinity,
+                      repeatType: 'loop',
                       ease: 'easeInOut',
                     }}
                     /* AJUSTAR DISTANCIA Y VELOCIDAD DE LA ANIMACIÓN AQUÍ */
