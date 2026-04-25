@@ -330,13 +330,13 @@ export default function App() {
                   {/* AJUSTAR POSICIÓN VERTICAL DE LA TARJETA AQUÍ */}
                   {/* AJUSTES RESPONSIVE TABLET / MOBILE AQUÍ */}
                   <motion.div
-                    className="group absolute bottom-0 left-1/2 flex w-[220px] -translate-x-1/2 items-center gap-4 rounded-3xl border border-teal-100 bg-white/95 px-4 py-3 shadow-lg shadow-teal-900/10 transition-all duration-300 ease-out hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] dark:border-white/10 dark:bg-slate-900/80 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:bg-slate-900"
+                    className="group absolute bottom-0 right-1/2 flex w-[240px] -translate-x-1/2 items-center gap-4 rounded-3xl border border-teal-100 bg-white/95 px-4 py-3 shadow-lg shadow-teal-900/10 transition-all duration-300 ease-out hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] dark:border-white/10 dark:bg-slate-900/80 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:bg-slate-900"
                     animate={{
-                      y: [0, 18, 6, 0],
+                      y: [-6, 8, 8, -6],
                       /* AJUSTAR ANIMACIÓN EXISTENTE AQUÍ */
                     }}
                     transition={{
-                      duration: 9,
+                      duration: 8,
                       repeat: Infinity,
                       ease: 'easeInOut',
                     }}
@@ -345,8 +345,8 @@ export default function App() {
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-600">
                         <Heart size={18} />
                       </div>
-                      <div className="space-y-0.5">
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-teal-500 transition-all duration-300 group-hover:text-teal-600">
+                      <div className="space-y-0.3">
+                        <p className="text-[13px] font-extrabold uppercase tracking-[0.04em] text-teal-500 transition-all duration-300 group-hover:text-teal-600">
                           Atención Integral
                         </p>
                         <p className="text-sm leading-tight text-teal-900/80 dark:text-teal-100/80">Presencial y online</p>
