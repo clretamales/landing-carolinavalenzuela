@@ -130,8 +130,66 @@ const serviceCards = [
 const servicesLinkText = 'SABER MÁS' /* CAMBIAR TEXTO DEL LINK AQUÍ */
 
 const whatsappNumber = '+56995371195' /* EDITAR NÚMERO DE WHATSAPP AQUÍ */
-const whatsappMessage = 'Hola%20Carolina,%20quiero%20coordinar%20mi%20primera%20sesión.' /* EDITAR MENSAJE INICIAL DE WHATSAPP AQUÍ */
-const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${whatsappMessage}` /* CAMBIAR LINK DE CTA AQUÍ */
+const whatsappMessage = 'Hola Carolina, quiero coordinar mi primera sesión.' /* EDITAR MENSAJE INICIAL DE WHATSAPP AQUÍ */
+const buildWhatsAppUrl = (message) =>
+  `https://wa.me/${whatsappNumber.replace('+', '')}?text=${encodeURIComponent(message)}`
+const whatsappUrl = buildWhatsAppUrl(whatsappMessage) /* CAMBIAR LINK DE CTA AQUÍ */
+
+const initialContactForm = {
+  name: '',
+  phone: '',
+  email: '',
+  message: '',
+}
+
+const initialContactErrors = {
+  name: '',
+  phone: '',
+  email: '',
+  message: '',
+}
+
+const initialContactTouched = {
+  name: false,
+  phone: false,
+  email: false,
+  message: false,
+}
+
+const sanitizeContactValue = (value, maxLength) =>
+  value.replace(/[\u0000-\u001f\u007f<>`]/g, '').slice(0, maxLength)
+
+const normalizeContactForm = (form) => ({
+  name: form.name.trim(),
+  phone: form.phone.trim(),
+  email: form.email.trim().toLowerCase(),
+  message: form.message.trim(),
+})
+
+const validateContactForm = (form) => {
+  const normalized = normalizeContactForm(form)
+  const errors = {}
+
+  if (!normalized.name) {
+    errors.name = 'Tu nombre es requerido.'
+  }
+
+  if (!normalized.email) {
+    errors.email = 'Tu correo es requerido.'
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized.email)) {
+    errors.email = 'Ingresa un correo válido.'
+  }
+
+  if (normalized.phone && !/^[0-9+\-()\s]{6,20}$/.test(normalized.phone)) {
+    errors.phone = 'Ingresa un teléfono válido.'
+  }
+
+  if (!normalized.message) {
+    errors.message = 'Cuéntame brevemente cómo puedo ayudarte.'
+  }
+
+  return errors
+}
 
 const fadeIn = {
   hidden: { opacity: 0, y: 24 },
@@ -192,12 +250,10 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [flippedCards, setFlippedCards] = useState({})
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
-  const [contactForm, setContactForm] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    message: '',
-  })
+  const [contactForm, setContactForm] = useState(initialContactForm)
+  const [contactErrors, setContactErrors] = useState(initialContactErrors)
+  const [contactTouched, setContactTouched] = useState(initialContactTouched)
+  const [isSubmittingContact, setIsSubmittingContact] = useState(false)
   const enfoqueScrollRef = useRef(null)
   const manualThemeChangeRef = useRef(false)
 
@@ -210,20 +266,52 @@ export default function App() {
 
   const closeContactModal = () => {
     setIsContactModalOpen(false)
-    setContactForm({
-      name: '',
-      phone: '',
-      email: '',
-      message: '',
-    })
+    setContactForm(initialContactForm)
+    setContactErrors(initialContactErrors)
+    setContactTouched(initialContactTouched)
+    setIsSubmittingContact(false)
+  }
+
+  const updateContactField = (field, maxLength) => (event) => {
+    const nextValue = sanitizeContactValue(event.target.value, maxLength)
+    const nextForm = { ...contactForm, [field]: nextValue }
+
+    setContactForm(nextForm)
+
+    if (contactTouched[field] || contactErrors[field]) {
+      setContactErrors(validateContactForm(nextForm))
+    }
+  }
+
+  const touchContactField = (field) => () => {
+    setContactTouched((prev) => ({ ...prev, [field]: true }))
+    setContactErrors(validateContactForm(contactForm))
   }
 
   const handleContactSubmit = (event) => {
     event.preventDefault()
 
+    const normalizedForm = normalizeContactForm(contactForm)
+    const nextErrors = validateContactForm(normalizedForm)
+    const touchedAllFields = {
+      name: true,
+      phone: true,
+      email: true,
+      message: true,
+    }
+
+    setContactTouched(touchedAllFields)
+    setContactErrors(nextErrors)
+
+    if (Object.keys(nextErrors).length > 0) {
+      return
+    }
+
+    setIsSubmittingContact(true)
+
     const subject = encodeURIComponent('Consulta desde sitio web')
     const body = encodeURIComponent(
-      `Nombre: ${contactForm.name}\nTeléfono: ${contactForm.phone}\nEmail: ${contactForm.email}\nMensaje: ${contactForm.message}`,
+      `Nombre: ${normalizedForm.name}\nTeléfono: ${normalizedForm.phone || 'No indicado'}\nEmail: ${normalizedForm.email}\nMensaje: ${normalizedForm.message}`,
     )
 
     window.location.href = `mailto:contacto@carolinavalenzuela.cl?subject=${subject}&body=${body}`
@@ -259,6 +347,8 @@ export default function App() {
     setIsDark((prev) => !prev)
   }
 
+  const isContactFormValid = Object.keys(validateContactForm(contactForm)).length === 0
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 30)
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -277,13 +367,7 @@ export default function App() {
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
-        setIsContactModalOpen(false)
-        setContactForm({
-          name: '',
-          phone: '',
-          email: '',
-          message: '',
-        })
+        closeContactModal()
       }
     }
 
@@ -409,11 +493,11 @@ export default function App() {
                   {/* AJUSTAR ESTILOS DEL BADGE AQUÍ */}
                 </span>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif leading-tight text-teal-900 dark:text-teal-100">
-                  Un espacio seguro para comprender lo que te está pasando y {' '}
+                  Psicóloga clínica en Santiago para comprender lo que te está pasando y{' '}
                   <span className="italic text-teal-600 dark:text-teal-200">avanzar a tu ritmo, con apoyo profesional.</span>
                 </h1>
                 <p className="text-lg text-teal-900/80 max-w-2xl dark:text-teal-100/80">
-                  Acompaño procesos de ansiedad, estrés y dificultades emocionales desde un enfoque cercano, respetuoso y profesional.
+                  Psicoterapia presencial y online en Santiago, con atención cercana, respetuosa y profesional cerca de Metro Toesca.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   {/* CONTROLAR MAYÚSCULAS / MINÚSCULAS AQUÍ */}
@@ -629,7 +713,7 @@ export default function App() {
                 <a
                   href={whatsappUrl}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="inline-flex min-w-[320px] items-center justify-center rounded-full bg-white px-10 py-5 text-base font-bold tracking-normal text-teal-900 shadow-lg shadow-teal-900/30 transition hover:-translate-y-0.5 md:min-w-[420px] md:text-lg"
                 >
                   {/* CAMBIAR TEXTO DEL BOTÓN AQUÍ */}
@@ -668,7 +752,7 @@ export default function App() {
                     <a
                       href="https://www.instagram.com/ps.carolinavalenzuela_/"
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
                     >
                       <Instagram size={20} />
@@ -677,7 +761,7 @@ export default function App() {
                     <a
                       href="https://www.linkedin.com/in/carolina-valenzuela-jara-b050a437b/"
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="w-11 h-11 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 transition-all duration-300 hover:bg-teal-600 hover:text-white hover:-translate-y-0.5 shadow-sm dark:bg-slate-800 dark:text-teal-300 dark:hover:bg-teal-600 dark:hover:text-white"
                     >
                       <Linkedin size={20} />
@@ -714,7 +798,7 @@ export default function App() {
 
                   <div className="space-y-3 text-sm text-teal-900/80 dark:text-teal-100/80">
                     <p>Domeyko 1835, Santiago, Región Metropolitana, Chile</p>
-                    <p>Atención psicológica en Santiago, en un espacio accesible y bien conectado.</p>
+                    <p>Atención psicológica en Santiago, cerca de Metro Toesca, en un espacio accesible y bien conectado.</p>
                   </div>
                 </div>
               </div>
@@ -727,7 +811,7 @@ export default function App() {
                   <a
                     href="https://www.google.com/maps/dir/?api=1&destination=Domeyko+1835+Santiago+Chile"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex w-fit items-center justify-center rounded-full border border-teal-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-teal-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-teal-300 hover:shadow-md dark:border-white/15 dark:bg-slate-900 dark:text-teal-200"
                   >
                     Cómo llegar
@@ -805,13 +889,20 @@ export default function App() {
                     </span>
                     <input
                       type="text"
+                      maxLength={100}
                       value={contactForm.name}
-                      onChange={(event) =>
-                        setContactForm((prev) => ({ ...prev, name: event.target.value }))
-                      }
+                      onChange={updateContactField('name', 100)}
+                      onBlur={touchContactField('name')}
+                      aria-invalid={Boolean(contactErrors.name)}
+                      aria-describedby="contact-name-error"
                       className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
                       placeholder="Tu nombre"
                     />
+                    {contactErrors.name ? (
+                      <p id="contact-name-error" className="text-xs text-rose-500">
+                        {contactErrors.name}
+                      </p>
+                    ) : null}
                   </label>
 
                   <label className="space-y-2">
@@ -820,13 +911,20 @@ export default function App() {
                     </span>
                     <input
                       type="tel"
+                      maxLength={20}
                       value={contactForm.phone}
-                      onChange={(event) =>
-                        setContactForm((prev) => ({ ...prev, phone: event.target.value }))
-                      }
+                      onChange={updateContactField('phone', 20)}
+                      onBlur={touchContactField('phone')}
+                      aria-invalid={Boolean(contactErrors.phone)}
+                      aria-describedby="contact-phone-error"
                       className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
                       placeholder="+56 9..."
                     />
+                    {contactErrors.phone ? (
+                      <p id="contact-phone-error" className="text-xs text-rose-500">
+                        {contactErrors.phone}
+                      </p>
+                    ) : null}
                   </label>
                 </div>
 
@@ -836,13 +934,20 @@ export default function App() {
                   </span>
                   <input
                     type="email"
+                    maxLength={100}
                     value={contactForm.email}
-                    onChange={(event) =>
-                      setContactForm((prev) => ({ ...prev, email: event.target.value }))
-                    }
+                    onChange={updateContactField('email', 100)}
+                    onBlur={touchContactField('email')}
+                    aria-invalid={Boolean(contactErrors.email)}
+                    aria-describedby="contact-email-error"
                     className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
                     placeholder="tu@email.com"
                   />
+                  {contactErrors.email ? (
+                    <p id="contact-email-error" className="text-xs text-rose-500">
+                      {contactErrors.email}
+                    </p>
+                  ) : null}
                 </label>
 
                 <label className="block space-y-2">
@@ -851,13 +956,20 @@ export default function App() {
                   </span>
                   <textarea
                     rows="5"
+                    maxLength={500}
                     value={contactForm.message}
-                    onChange={(event) =>
-                      setContactForm((prev) => ({ ...prev, message: event.target.value }))
-                    }
+                    onChange={updateContactField('message', 500)}
+                    onBlur={touchContactField('message')}
+                    aria-invalid={Boolean(contactErrors.message)}
+                    aria-describedby="contact-message-error contact-disclaimer"
                     className="w-full rounded-2xl border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900 outline-none transition placeholder:text-teal-400 focus:border-teal-400 focus:bg-white focus:ring-4 focus:ring-teal-100 dark:border-white/10 dark:bg-slate-900 dark:text-teal-100 dark:placeholder:text-teal-400/60 dark:focus:bg-slate-900 dark:focus:ring-teal-500/10"
                     placeholder="Cuéntanos cómo podemos ayudarte"
                   />
+                  {contactErrors.message ? (
+                    <p id="contact-message-error" className="text-xs text-rose-500">
+                      {contactErrors.message}
+                    </p>
+                  ) : null}
                 </label>
 
                 <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-end">
@@ -870,11 +982,22 @@ export default function App() {
                   </button>
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center rounded-full bg-teal-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition hover:-translate-y-0.5 hover:bg-teal-700"
+                    disabled={!isContactFormValid || isSubmittingContact}
+                    className="inline-flex items-center justify-center rounded-full bg-teal-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition hover:-translate-y-0.5 hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-teal-600"
                   >
                     Enviar
                   </button>
                 </div>
+
+                <p
+                  id="contact-disclaimer"
+                  className="text-xs leading-relaxed text-teal-900/70 dark:text-teal-100/70"
+                >
+                  Evita compartir información clínica sensible por este medio. Este canal es solo para coordinar contacto.
+                </p>
+                <p className="text-xs text-teal-900/60 dark:text-teal-100/60">
+                  La reserva se confirma por WhatsApp.
+                </p>
               </form>
             </motion.div>
           </motion.div>
