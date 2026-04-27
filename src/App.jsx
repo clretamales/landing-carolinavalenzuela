@@ -329,12 +329,11 @@ export default function App() {
                   {/* AJUSTAR ESTILOS DEL BADGE AQUÍ */}
                 </span>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif leading-tight text-teal-900 dark:text-teal-100">
-                  Un espacio cálido y experto para cuidar tu salud emocional.{' '}
-                  <span className="italic text-teal-600 dark:text-teal-200">para que vuelvas a sentirte pleno.</span>
+                  Un espacio seguro para comprender lo que te está pasando y {' '}
+                  <span className="italic text-teal-600 dark:text-teal-200">avanzar a tu ritmo, con apoyo profesional.</span>
                 </h1>
                 <p className="text-lg text-teal-900/80 max-w-2xl dark:text-teal-100/80">
-                  Trabajo con adultos y familias desde una mirada integradora: respeto por tus tiempos,
-                  acompañamiento con evidencia científica y énfasis en que cada sesión sea reparadora.
+                  Acompaño procesos de ansiedad, estrés y dificultades emocionales desde un enfoque cercano, respetuoso y profesional.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   {/* CONTROLAR MAYÚSCULAS / MINÚSCULAS AQUÍ */}
@@ -346,7 +345,7 @@ export default function App() {
                     transition={{ duration: 0.2, ease: 'easeOut' }}
                   >
                     {/* ANIMACIÓN DEL BOTÓN PRINCIPAL AQUÍ */}
-                    Agenda una sesión
+                    Quiero agendar mi sesión
                     <span aria-hidden="true">↗</span>
                   </motion.a>
                   <motion.a
@@ -367,7 +366,7 @@ export default function App() {
                 transition={{ duration: 0.9 }}
                 className="relative flex justify-center"
               >
-                <div className="relative mx-auto w-full max-w-[460px] lg:max-w-[500px]">
+                <div className="relative mx-auto w-full max-w-[460px] lg:w-[500px] lg:max-w-none">
                   <div className="h-[520px] w-full overflow-hidden rounded-[56px] border-8 border-white bg-white shadow-[0_25px_60px_rgba(4,78,67,0.35)] dark:border-slate-700 dark:bg-slate-900/70 dark:shadow-[0_25px_60px_rgba(2,63,67,0.55)]">
                     <img
                       src={fotoHero}
@@ -379,7 +378,7 @@ export default function App() {
                   {/* AJUSTAR POSICIÓN VERTICAL DE LA TARJETA AQUÍ */}
                   {/* AJUSTES RESPONSIVE TABLET / MOBILE AQUÍ */}
                   <motion.div
-                    className="group absolute bottom-0 right-1/2 flex w-[240px] -translate-x-1/2 items-center gap-4 rounded-3xl border border-teal-100 bg-white/95 px-4 py-3 shadow-lg shadow-teal-900/10 transition-all duration-300 ease-out hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] dark:border-white/10 dark:bg-slate-900/80 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:bg-slate-900"
+                    className="group absolute bottom-0 left-4 sm:left-6 lg:left-8 z-10 flex w-[min(240px,calc(100%-2rem))] items-center gap-4 rounded-3xl border border-teal-100 bg-white/95 px-4 py-3 shadow-lg shadow-teal-900/10 transition-all duration-300 ease-out hover:bg-white hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] dark:border-white/10 dark:bg-slate-900/80 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:bg-slate-900"
                     animate={{
                       y: [-6, 8, -6],
                       /* AJUSTAR ANIMACIÓN EXISTENTE AQUÍ */
