@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Sparkles,
@@ -7,12 +7,14 @@ import {
   MessageCircle,
   Calendar,
   Mail,
-  Coffee,
-  CheckCircle2,
   Flower2,
   Users,
   Globe,
   Star,
+  Brain,
+  Zap,
+  Compass,
+  ChevronLeft,
   ChevronRight,
   Sun,
   Moon,
@@ -66,19 +68,34 @@ const navLinks = [
 const therapeuticCards = [
   /* DUPLICAR ESTE OBJETO PARA AGREGAR OTRA CARD */
   {
-    icon: Coffee, /* CAMBIAR ICONOS AQUÍ */
-    title: 'Cercanía',
-    description: 'Un ambiente seguro donde puedes ser tú mismo sin juicios.', /* EDITAR TEXTO DE CARD AQUÍ */
+    icon: Brain, /* CAMBIAR ICONOS AQUÍ */
+    title: 'Ansiedad',
+    description: 'Trabajo con inquietud constante, preocupación excesiva y dificultad para relajarte.',
   },
   {
-    icon: Leaf, /* CAMBIAR ICONOS AQUÍ */
-    title: 'Cuidado',
-    description: 'Herramientas personalizadas para tu crecimiento emocional.', /* EDITAR TEXTO DE CARD AQUÍ */
+    icon: Zap, /* CAMBIAR ICONOS AQUÍ */
+    title: 'Estrés',
+    description: 'Encuentra respiraciones conscientes y límites claros para aliviar la carga diaria.',
   },
   {
-    icon: CheckCircle2, /* CAMBIAR ICONOS AQUÍ */
-    title: 'Rigor',
-    description: 'Basado en metodologías clínicas validadas.', /* EDITAR TEXTO DE CARD AQUÍ */
+    icon: Heart, /* CAMBIAR ICONOS AQUÍ */
+    title: 'Desborde emocional',
+    description: 'Recupera calma cuando las emociones se sienten abrumadoras y difíciles de contener.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Autoestima',
+    description: 'Fomenta la autocompasión, reconoce tus logros y valida tu valor personal.',
+  },
+  {
+    icon: MessageCircle,
+    title: 'Relaciones',
+    description: 'Explora vínculos significativos para dialogar con claridad y empatía.',
+  },
+  {
+    icon: Compass,
+    title: 'Crisis personales',
+    description: 'Acompañamiento profesional cuando necesitas orientarte en decisiones y cambios.',
   },
 ]
 
@@ -161,7 +178,17 @@ const SectionHeader = ({ subtitle, title }) => (
 )
 
 export default function App() {
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme) {
+        return savedTheme === 'dark'
+      }
+
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
+    return false
+  })
   const [isScrolled, setIsScrolled] = useState(false)
   const [flippedCards, setFlippedCards] = useState({})
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
@@ -171,6 +198,8 @@ export default function App() {
     email: '',
     message: '',
   })
+  const enfoqueScrollRef = useRef(null)
+  const manualThemeChangeRef = useRef(false)
 
   const toggleServiceCard = (index, value) => {
     setFlippedCards((prev) => ({
@@ -201,11 +230,47 @@ export default function App() {
     closeContactModal()
   }
 
+  const scrollEnfoque = (direction) => {
+    const container = enfoqueScrollRef.current
+    if (!container) return
+
+    const cardWidth = 340
+    const maxScroll = container.scrollWidth - container.clientWidth
+
+    let newScroll = container.scrollLeft + direction * cardWidth
+
+    if (newScroll >= maxScroll - 5) {
+      // llegó al final → volver al inicio
+      container.scrollTo({ left: 0, behavior: 'smooth' })
+      return
+    }
+
+    if (newScroll <= 0) {
+      // llegó al inicio → ir al final
+      container.scrollTo({ left: maxScroll, behavior: 'smooth' })
+      return
+    }
+
+    container.scrollTo({ left: newScroll, behavior: 'smooth' })
+  }
+
+  const toggleTheme = () => {
+    manualThemeChangeRef.current = true
+    setIsDark((prev) => !prev)
+  }
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 30)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    if (!manualThemeChangeRef.current) return
+
+    localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    manualThemeChangeRef.current = false
+  }, [isDark])
 
   useEffect(() => {
     if (!isContactModalOpen) return undefined
@@ -225,6 +290,21 @@ export default function App() {
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [isContactModalOpen])
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+
+    const handleChange = (event) => {
+      const savedTheme = localStorage.getItem('theme')
+      if (!savedTheme) {
+        setIsDark(event.matches)
+      }
+    }
+
+    media.addEventListener('change', handleChange)
+
+    return () => media.removeEventListener('change', handleChange)
+  }, [])
   /* NAVBAR STICKY AQUÍ */
 
   return (
@@ -281,7 +361,7 @@ export default function App() {
             {/* AJUSTES RESPONSIVE DEL NAVBAR AQUÍ */}
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setIsDark((prev) => !prev)}
+                onClick={toggleTheme}
                 className="rounded-full border border-teal-200/60 bg-white/60 p-2 shadow-sm transition hover:scale-105 dark:border-slate-700 dark:bg-slate-900/60"
                 aria-label="Cambiar modo de color"
               >
@@ -412,27 +492,50 @@ export default function App() {
             className="py-24 bg-white/80 rounded-[40px] shadow-[0_20px_60px_rgba(15,118,110,0.07)] relative overflow-hidden dark:bg-slate-900/80 dark:shadow-[0_25px_70px_rgba(2,63,67,0.6)]"
           >
             {/* AJUSTAR PADDING, COLORES O SOMBRAS DE ESTA SECCIÓN AQUÍ */}
-            <SectionHeader subtitle="Metodología" title="Bienestar desde la ciencia y la empatía" />
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {therapeuticCards.map((card) => (
-                <motion.article
-                  key={card.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  whileHover={{ y: -10 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
-                  className="group flex transform-gpu flex-col items-center gap-4 rounded-3xl border border-teal-100 bg-emerald-50/50 p-6 text-center shadow-[0_15px_30px_rgba(15,118,110,0.08)] transition-all duration-300 ease-out hover:shadow-xl hover:border-teal-200/90 hover:bg-gradient-to-br hover:from-teal-50 hover:to-white dark:border-white/10 dark:bg-slate-900/50 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:border-teal-400/30 dark:hover:from-slate-800 dark:hover:to-slate-900"
-                >
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-teal-100 bg-teal-50 text-teal-600 transition-all duration-500 group-hover:bg-teal-100 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-300 dark:group-hover:bg-slate-700">
-                    <card.icon size={20} className="transition-colors duration-500 group-hover:text-teal-700 dark:group-hover:text-teal-200" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-teal-900 dark:text-teal-100">{card.title}</h3>
-                  <p className="text-sm text-teal-900/80 leading-relaxed dark:text-teal-100/80">
-                    {card.description}
-                  </p>
-                </motion.article>
-              ))}
+            <SectionHeader subtitle="Enfoque" title="Te puedo acompañar si estás pasando por…" />
+            <div className="relative mt-12 overflow-hidden px-10 sm:px-12 lg:px-14">
+              <button
+                type="button"
+                onClick={() => scrollEnfoque(-1)}
+                className="absolute left-1 top-1/2 z-20 -translate-y-1/2 rounded-full border border-teal-100 bg-white/90 p-3 text-teal-700 shadow-lg shadow-teal-900/10 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-teal-800 hover:shadow-xl dark:border-white/10 dark:bg-slate-950/90 dark:text-teal-200 dark:hover:bg-slate-900"
+                aria-label="Desplazar enfoque hacia la izquierda"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              <div
+                ref={enfoqueScrollRef}
+                className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+                {therapeuticCards.map((card) => (
+                  <motion.article
+                    key={card.title}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={{ y: -10 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="group flex min-h-[180px] w-[315px] min-w-[315px] snap-start flex-none flex-col items-center gap-4 rounded-3xl border border-teal-100 bg-emerald-50/50 p-6 text-center shadow-[0_15px_30px_rgba(15,118,110,0.08)] transition-all duration-300 ease-out hover:shadow-xl hover:border-teal-200/90 hover:bg-gradient-to-br hover:from-teal-50 hover:to-white dark:border-white/10 dark:bg-slate-900/50 dark:shadow-[0_15px_35px_rgba(2,63,67,0.45)] dark:hover:border-teal-400/30 dark:hover:from-slate-800 dark:hover:to-slate-900"
+                  >
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-teal-100 bg-teal-50 text-teal-600 transition-all duration-500 group-hover:bg-teal-100 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-300 dark:group-hover:bg-slate-700">
+                      <card.icon size={20} className="transition-colors duration-500 group-hover:text-teal-700 dark:group-hover:text-teal-200" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-teal-900 dark:text-teal-100">{card.title}</h3>
+                    <p className="mx-auto max-w-[240px] text-sm text-teal-900/80 leading-relaxed dark:text-teal-100/80">
+                      {card.description}
+                    </p>
+                  </motion.article>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => scrollEnfoque(1)}
+                className="absolute right-1 top-1/2 z-20 -translate-y-1/2 rounded-full border border-teal-100 bg-white/90 p-3 text-teal-700 shadow-lg shadow-teal-900/10 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:text-teal-800 hover:shadow-xl dark:border-white/10 dark:bg-slate-950/90 dark:text-teal-200 dark:hover:bg-slate-900"
+                aria-label="Desplazar enfoque hacia la derecha"
+              >
+                <ChevronRight size={20} />
+              </button>
             </div>
           </section>
 
@@ -442,7 +545,7 @@ export default function App() {
           >
             {/* CAMBIAR SUBTÍTULO DE SERVICIOS AQUÍ */}
             {/* CAMBIAR TÍTULO PRINCIPAL DE SERVICIOS AQUÍ */}
-            <SectionHeader subtitle="Especialidades" title="Acompañamiento a tu medida" />
+            <SectionHeader subtitle="Servicios" title="Acompañamiento a tu medida" />
             <div className="mt-12 grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
               {serviceCards.map((card, index) => (
                 <motion.article
@@ -532,6 +635,9 @@ export default function App() {
                   {/* CAMBIAR TEXTO DEL BOTÓN AQUÍ */}
                   Agenda tu primera sesión
                 </a>
+                <p className="mt-3 text-xs text-white/80 tracking-normal">
+                  Conversa por WhatsApp para reservar y ver disponibilidad.
+                </p>
               </div>
             </motion.div>
             {/* AJUSTAR COLORES DE LA CTA AQUÍ */}
